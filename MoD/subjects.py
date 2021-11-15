@@ -154,9 +154,9 @@ subjects.extend(local_subjects)
 # Собираем всё вместе
 
 subtree_name = 'Выбрать тему'
-subtree_caption = 'Список тем по категориям. Выберите одну'
+subtree_text = 'Список тем по категориям. Выберите одну'
 
-subtree = {subtree_name: [subjects_subtree, subtree_caption]}
+subtree = {subtree_name: [subjects_subtree, subtree_text]}
 
 database[0].update(subtree)
 
@@ -181,9 +181,15 @@ def i_am_lucky():
     return reply
 
 
+suggest_subject_caption = "Предложить новую тему"
+suggest_subject_text = "Напиши тему, чтобы отправить её на рассмотрение. Помни, что краткость - сестра таланта." \
+                       " Пожалуйста, не используй более 300 символов."
 
+suggest_subject_buttons = {
+    "Подтвердить": "Отлично, твоя тема была отправлена разработчику бота. Возможно, вскоре она появится в новой версии",
+    "Попробовать снова": "Напиши тему ещё раз. Помни про ограничение в 300 символов"
+}
 
+suggestion_subtree = {suggest_subject_caption: suggest_subject_text}
 
-
-
-
+database[0].update(suggestion_subtree)
