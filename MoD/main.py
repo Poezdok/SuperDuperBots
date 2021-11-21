@@ -11,7 +11,7 @@ import utils
 # Создаём объект бот - привязываем его к нашему тг боту через токен
 tele_bot = telebot.TeleBot(config.token)
 
-
+#
 def send_suggestion(message, state):
     text = "Новое предложение темы для курсовой!\n\n"
     text += "Автор темы: " + message.from_user.first_name + " " + message.from_user.last_name + "\n\n"
@@ -19,7 +19,7 @@ def send_suggestion(message, state):
     if len(state) == 2:
         text += state[1]
     else:
-        text += "Тут должно быть описание темы, но в механике бота что-то пошло не так. Стоит проверть"
+        text += "Тут должно быть описание темы, но в механике бота что-то пошло не так. Стоит проверить"
 
     tele_bot.send_message(config.master_id, text)
 
@@ -32,7 +32,7 @@ def suggest_subject(text, state):
 
     if text == 'Назад':
         state.pop()
-        markup, reply = utils.get_reply(state, text)
+        markup, reply = utils.get_reply(state)
         return reply, state, markup
 
     state.append(text)
@@ -56,14 +56,14 @@ def submit_suggestion(message, state):
     if text == 'Подтвердить':
         send_suggestion(message, state)
         state.clear()
-        markup, reply = utils.get_reply(state, text)
+        markup, reply = utils.get_reply(state)
         reply = 'Отлично! Уже отправили разрабам'
     elif text == 'Попробовать снова':
         state.pop()
-        markup, reply = utils.get_reply(state, text)
+        markup, reply = utils.get_reply(state)
     elif text == 'Отменить':
         state.clear()
-        markup, reply = utils.get_reply(state, text)
+        markup, reply = utils.get_reply(state)
         reply = 'Ну, что же, ты знаешь, где меня найти, если ты передумаешь :)'
     else:
         markup = types.ReplyKeyboardMarkup()
@@ -71,7 +71,7 @@ def submit_suggestion(message, state):
 
     return reply, state, markup
 
-
+# Функция обработки входящего сообщения
 @tele_bot.message_handler(content_types=['text'])
 def text_message(message):
 
@@ -113,9 +113,7 @@ def text_message(message):
                 tele_bot.send_message(message.chat.id, "Выбери кнопку!", )
                 return
 
-    markup, answer = utils.get_reply(state, message.text)
-    # if len(answer) == 0:
-    #     answer = subjects.start_answer
+    markup, answer = utils.get_reply(state)
 
     tele_bot.send_message(message.chat.id, answer, reply_markup=markup)
 

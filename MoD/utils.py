@@ -3,6 +3,7 @@ from telebot import types
 import profiles
 import subjects
 
+
 # Получаем локальное поддерево кнопок и ответов, на основе текущего "положения" собеседника
 def get_local_database(state):
     temp = subjects.database
@@ -12,7 +13,7 @@ def get_local_database(state):
     return temp
 
 
-def get_reply(state, text):
+def get_reply(state):
 
     temp = get_local_database(state)
     # print(temp)
@@ -28,7 +29,7 @@ def get_reply(state, text):
         keys = temp
         answer = temp
 
-    if(len(state) > 0):
+    if len(state) > 0:
         back = types.KeyboardButton('Назад')
         markup.row(back)
     return markup, answer
